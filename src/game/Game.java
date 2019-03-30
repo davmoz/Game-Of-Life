@@ -20,15 +20,19 @@ import javafx.util.Duration;
 public class Game extends Application {
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	private static final int CELL_SIZE = 20;
+	private static final int CELL_SIZE = 10;
 	private static final int BUTTON_SPACING = 20;
 	private static Platform gameOfLife;
 	private static Timeline timeline;
+	private Label born;
+	private Label dead;
 
 	@Override
 	public void start(Stage primaryStage) {
 
 		gameOfLife = new Platform(CELL_SIZE, WIDTH, HEIGHT);
+		born = new Label("Born: " + gameOfLife.getBorn());
+		dead = new Label("Dead: " + gameOfLife.getDead());
 
 		BorderPane pane = new BorderPane();
 		Group root = new Group();
@@ -39,7 +43,7 @@ public class Game extends Application {
 		Button resetBtn = new Button("Reset");
 		Spinner<Double> speed = new Spinner<>();
 		Label speedLabel = new Label("Speed (s): ");
-		speed.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.05, 6.0, 0.05, 0.05));
+		speed.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 6.0, 0.01, 0.05));
 		Label generationLabel = new Label("Generations (0 == infinity): ");
 		Spinner<Integer> generations = new Spinner<>();
 		generations.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5000000, 0, 500000));
@@ -47,7 +51,7 @@ public class Game extends Application {
 		pane.setOnMousePressed(e -> {
 			gameOfLife.toggleCell(e.getX(), e.getY());
 		});
-		
+
 		pane.setOnMouseDragged(e -> {
 			gameOfLife.toggleCell(e.getX(), e.getY());
 		});
@@ -79,10 +83,12 @@ public class Game extends Application {
 			randomBtn.setDisable(false);
 			speed.setDisable(false);
 			gameOfLife.reset();
+			born.setText("Born: " + gameOfLife.getBorn());
+			dead.setText("Dead: " + gameOfLife.getDead());
 		});
 
-		panel.getChildren().addAll(speedLabel, speed, randomBtn, startBtn, stopBtn, resetBtn, generationLabel,
-				generations);
+		panel.getChildren().addAll(born, speedLabel, speed, randomBtn, startBtn, stopBtn, resetBtn, generationLabel,
+				generations, dead);
 		panel.setSpacing(BUTTON_SPACING);
 		panel.setAlignment(Pos.CENTER);
 		panel.setStyle("-fx-background-color: gray;");
@@ -105,7 +111,10 @@ public class Game extends Application {
 	private void updateTimeLineDuration(double duration, int numOfGenerations) {
 
 		KeyFrame updateRatio = new KeyFrame(Duration.seconds(duration), e -> {
+
 			gameOfLife.updateAll();
+			born.setText("Born: " + gameOfLife.getBorn());
+			dead.setText("Dead: " + gameOfLife.getDead());
 		});
 		timeline = new Timeline(updateRatio);
 

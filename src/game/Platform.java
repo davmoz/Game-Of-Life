@@ -7,9 +7,13 @@ public class Platform {
 	private Cell cells[][];
 	private boolean[][] previousState;
 	private int cellSize;
+	private long born;
+
+	private long dead;
 
 	public Platform(int size, int width, int height) {
-
+		born = 0;
+		dead = 0;
 		cellSize = size;
 		cells = new Cell[width / cellSize][height / cellSize];
 		previousState = new boolean[width / cellSize][height / cellSize];
@@ -55,8 +59,10 @@ public class Platform {
 		int neighbours = numOfAliveNeighbours(x, y);
 		if (cell.isAlive() && neighbours < 2 || neighbours > 3) {
 			cell.off();
+			dead++;
 		} else if (!cell.isAlive() && neighbours == 3) {
 			cell.on();
+			born++;
 		}
 	}
 
@@ -118,15 +124,19 @@ public class Platform {
 	}
 
 	public void reset() {
+
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
 				previousState[i][j] = false;
 				cells[i][j].off();
 			}
 		}
+		born = 0;
+		dead = 0;
 	}
 
 	public void toggleCell(double d, double e) {
+		
 		int x = (int) d / cellSize;
 		int y = (int) e / cellSize;
 		if (cells[x][y].isAlive()) {
@@ -154,5 +164,13 @@ public class Platform {
 				i = i + 5;
 			}
 		}
+	}
+
+	public long getBorn() {
+		return born;
+	}
+
+	public long getDead() {
+		return dead;
 	}
 }
