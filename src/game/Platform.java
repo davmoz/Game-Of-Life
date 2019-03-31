@@ -136,7 +136,7 @@ public class Platform {
 	}
 
 	public void toggleCell(double d, double e) {
-		
+
 		int x = (int) d / cellSize;
 		int y = (int) e / cellSize;
 		if (cells[x][y].isAlive()) {
@@ -149,10 +149,11 @@ public class Platform {
 	}
 
 	public void randomize() {
+		reset();
 		Random rand = new Random();
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
-				if (rand.nextInt(1001) < 50) {
+				if (rand.nextInt(1001) < 500) {
 					previousState[i][j] = true;
 					cells[i][j].on();
 				} else {

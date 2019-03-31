@@ -20,7 +20,7 @@ import javafx.util.Duration;
 public class Game extends Application {
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	private static final int CELL_SIZE = 10;
+	private static final int CELL_SIZE = 30;
 	private static final int BUTTON_SPACING = 20;
 	private static Platform gameOfLife;
 	private static Timeline timeline;
@@ -64,7 +64,6 @@ public class Game extends Application {
 			randomBtn.setDisable(true);
 			resetBtn.setDisable(true);
 			startBtn.setDisable(true);
-			speed.setDisable(true);
 			generations.setDisable(true);
 			updateTimeLineDuration(speed.getValue(), generations.getValue());
 			timeline.play();
